@@ -58,12 +58,17 @@ namespace TaskTracker.Repository
 
         public IQueryable<Project> GetByDateRange(DateTime start, DateTime end)
         {
-            return db.Projects.Where(x => x.StartDate >= start && x.CompletitionDate <= end).OrderBy(x => x.StartDate);
+            return db.Projects.Where(x => x.StartDate >= start && x.CompletionDate <= end).OrderBy(x => x.StartDate);
         }
 
         public IQueryable<Project> GetByPriority(int priority)
         {
             return db.Projects.Where(x => x.Priority == priority);
+        }
+
+        public IQueryable<Project> GetByStatus(int status)
+        {
+            return db.Projects.Where(x => (int)x.Status == status);
         }
     }
 }

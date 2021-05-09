@@ -13,6 +13,8 @@ namespace TaskTracker.Interfaces
         IQueryable<Project> GetAll();
         IQueryable<Project> GetByDateRange(DateTime start, DateTime end);
         IQueryable<Project> GetByPriority(int priority);
+        IQueryable<Project> GetByStatus(int status);
+
         void Update(Project Project);
         void Delete(Project Project);
     }

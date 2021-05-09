@@ -4,21 +4,72 @@
 
 <div id="topDiv" class="jumbotron text-center">
     <h1>Task Tracker</h1>
-    <button id="btnTasks" class="btn btn-primary btn-lg">Manage Tasks</button>
+    <button id="btnTasks" class="btn btn-success btn-lg">Manage Tasks</button>
     <br />
     <br />
-
-    <button id="btnProjects" class="btn btn-primary btn-lg">Manage Projects</button>
-    @*<p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS, and JavaScript.</p>
-        <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>*@
+    <button id="btnProjects" style="" class="btn btn-success btn-lg">Manage Projects</button>
+    
 </div>
 <div class="row">
 
-    <div id="taskForm" class="col-md-12">
-        <h2 class="text-center">Add new task</h2>
-        <form style="width: 400px; margin:auto" method="post" action="post/" id="formTasks">
+    <div id="divTasks" class="jumbotron col-md-12 hidden">
+        <div id="filterDiv" style="width: auto; margin: auto" class="form-group text-center hidden">
+            <br />
+            <br />
+            
+            <div style="width: 500px; margin: auto">
+                <label class="col-form-label col-sm-5" for="startDate">Filter by: </label>
+                <select style="margin: auto" class="form-control col-sm-5" id="filterBy">
+                    <option value="0" selected>Date range</option>
+                    <option value="1">Priority</option>
+                    <option value="2">Status</option>
+                </select>
+                <br />
+            </div>
+            <div id="filterDate" style="width: 500px; margin: auto">
+                <br />
+                <br />
+                <label class="col-form-label col-sm-5" for="startDate">Start date: </label>
+                <input style="margin: auto" class="form-control col-sm-5" type="date" id="filterStartDate" />
+                <br />
+                <br />
+                <br />
+                <label class="col-form-label col-sm-5" for="startDate">Completion date: </label>
+                <input style="margin: auto" class="form-control col-sm-5" type="date" id="filterEndDate" />
+                <br />
+            </div>
+            <div id="filterPriority" class="hidden" style="width: 500px; margin: auto">
+                <br />
+                <br />
+                <label class="col-form-label col-sm-5" for="startDate">Priority: </label>
+                <select style="margin: auto" class="form-control col-sm-5" id="prioritySelect">
+                    <option value="1" selected>1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                </select>
+                <br />
+            </div>
+            <div id="filterStatus" style="width: 500px; margin: auto" class="hidden">
+                <br />
+                <br />
+                <label class="col-form-label col-sm-5" for="startDate">Status: </label>
+                <select style="margin: auto" class="form-control col-sm-5" id="statusSelect">
+                    <option value="0" selected>Not Started</option>
+                    <option value="1">Active</option>
+                    <option value="2">Completed</option>
+                </select>
+            </div>
+            <br />
+            <div style="width: 500px; margin: auto">
+                <br />
+                <button id="filterBtn" type="button" class="btn btn-success btn-lg">Filter</button>
+            </div>
+        </div>
+        <form style="width: 400px; margin:auto" class="hidden" id="formTasks">
+            <h2 class="text-center">Add new task</h2>
+
             <div class="form-group">
-                <label class="col-form-label" for="projectName" style="float:left">Project: </label>
+                <label class="col-form-label" for="projectId" style="float:left">Project: </label>
                 <select class="form-control col-sm-4" id="createInput4select" style="float:right"></select>
             </div>
             <br />
@@ -61,17 +112,86 @@
                 <br />
             </div>
             <br />
-            <div class="row form-group" style="margin:auto; width:300px">
-                <button type="submit" class="btn btn-default" style="width:100px; background-color: lightblue">Submit</button>
-                <br />
-                <br />
-                <input id="giveUpBtn" type="button" class="btn btn-default" style="width: 100px" value="Cancel" />
+            <div class="col-md-12 text-center btn-toolbar">
+                <div class="col-md-7">
+                    <button type="submit" class="btn btn-success btn-lg">Submit</button>
+                </div>
+                <div class="col-md-5">
+                    <button id="giveUpBtn" type="button" class="btn btn-danger btn-lg">Cancel</button>
+                </div>
             </div>
         </form>
-        @*<button id="jumpToLogin" type="submit" style="margin-left:150px" class="btn btn-default">Odustajanje</button>*@
-    </div>
-    <div id="tableTasks" class="col-md-12">
+        <form class="hidden" style="width: 400px; margin:auto" id="formProjects">
+            <h2 class="text-center">Add new project</h2>
+            <div class="form-group">
+                <label class="col-form-label" for="projectName" style="float:left">Project name: </label>
+                <input class="form-control col-sm-6" type="text" id="createInput6" style="float:right" />
+                <br />
+                <br />
+                <p id="validationMsgInput6" style="color:red; float:right"></p>
+                <br />
+            </div>
+            <div class="form-group">
+                <label class="col-form-label" for="startDate" style="float:left">Start date: </label>
+                <input class="form-control col-sm-4" type="date" id="createInput7" style="float:right" />
+                <br />
+                <br />
+                <p id="validationMsgInput7" style="color:red; float:right"></p>
+                <br />
+            </div>
+            <div class="form-group">
+                <label class="col-form-label" for="endDate" style="float:left">Completion date: </label>
+                <input class="form-control col-sm-4" type="date" id="createInput8" style="float:right" />
+                <br />
+                <br />
+                <p id="validationMsgInput8" style="color:red; float:right"></p>
+                <br />
+            </div>
+            <div class="form-group">
+                <label class="col-form-label" style="float:left" for="taskStatus">Status: </label>
+                <select class="form-control col-sm-4" id="createInput9select" style="float:right">
+                    <option value="0" selected>Not Started</option>
+                    <option value="1">Active</option>
+                    <option value="2">Completed</option>
+                </select>
+                <br />
+                <br />
+                <br />
+            </div>
+            <div class="form-group">
+                <label class="col-form-label" style="float:left" for="code">Code: </label>
+                <input class="form-control col-sm-4" type="text" id="createInput10" style="float: right" />
+                <br />
+                <br />
+                <p id="validationMsgInput10" style="color:red; float:right"></p>
+                <br />
+            </div>
+            <div class="form-group">
+                <label class="col-form-label" style="float:left" for="projectPriority">Priority: </label>
+                <input class="form-control col-sm-4" type="number" min="1" max="3" id="createInput11" style="float: right" />
+                <br />
+                <br />
+                <p id="validationMsgInput11" style="color:red; float:right"></p>
+                <br />
+            </div>
+            <br />
+            <div class="col-md-12 text-center btn-toolbar">
+                <div class="col-md-7">
+                    <button type="submit" class="btn btn-success btn-lg">Submit</button>
+                </div>
+                <div class="col-md-5">
+                    <button id="giveUpBtn" type="button" class="btn btn-danger btn-lg">Cancel</button>
+                </div>
+            </div>
+        </form>
+
+
+        <div id="tableTasks" class="col-md-12">
+
+        </div>
+
 
     </div>
+    
 
 </div>

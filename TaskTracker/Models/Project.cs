@@ -21,7 +21,7 @@ namespace TaskTracker.Models
         [Required]
         public DateTime StartDate { get; set; }
         [Required]
-        public DateTime CompletitionDate { get; set; }
+        public DateTime CompletionDate { get; set; }
         [Required]
         public ProjectStatuses Status { get; set; }
         [Required]

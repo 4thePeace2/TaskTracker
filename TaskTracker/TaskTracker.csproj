@@ -198,6 +198,10 @@
     <Compile Include="Migrations\202105081109446_initial.Designer.cs">
       <DependentUpon>202105081109446_initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202105091442193_correction.cs" />
+    <Compile Include="Migrations\202105091442193_correction.Designer.cs">
+      <DependentUpon>202105091442193_correction.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Project.cs" />
     <Compile Include="Models\ProjectDTO.cs" />
@@ -296,6 +300,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202105081109446_initial.resx">
       <DependentUpon>202105081109446_initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105091442193_correction.resx">
+      <DependentUpon>202105091442193_correction.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

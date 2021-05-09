@@ -119,7 +119,7 @@ namespace TaskTracker.Controllers
         }
 
         [HttpGet]
-        [Route("api/projects/priority")]
+        [Route("api/projects/with")]
         public IHttpActionResult GetByPriority(int priority)
         {
             if (priority > 0 && priority < 4)
@@ -134,6 +134,23 @@ namespace TaskTracker.Controllers
 
             return BadRequest();
             
+        }
+        [HttpGet]
+        [Route("api/projects/by")]
+        public IHttpActionResult GetByStatus(int status)
+        {
+            if (status >= 0 && status < 3)
+            {
+                var projects = _repository.GetByStatus(status).ProjectTo<ProjectDTO>();
+                if (projects.Count() > 0)
+                {
+                    return Ok(projects);
+                }
+                return NotFound();
+            }
+
+            return BadRequest();
+
         }
     }
 }

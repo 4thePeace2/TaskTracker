@@ -23,9 +23,9 @@ namespace TaskTracker.Migrations
 
             //Seeding Projects table in database: TaskTrackerDB
             context.Projects.AddOrUpdate(
-                    new Project() { Id= 1, Code= "PR001", Name= "First Project", StartDate = new DateTime(2016, 6, 28), CompletitionDate = new DateTime(2016, 9, 28), Priority = 1, Status = ProjectStatuses.Completed },
-                    new Project() { Id = 2, Code = "PR002", Name = "Second Project", StartDate = new DateTime(2017, 2, 15), CompletitionDate = new DateTime(2017, 8, 1), Priority = 3, Status = ProjectStatuses.Active },
-                    new Project() { Id = 3, Code = "PR003", Name = "Third Project", StartDate = new DateTime(2019, 1, 31), CompletitionDate = new DateTime(2019, 5, 1), Priority = 2, Status = ProjectStatuses.NotStarted }
+                    new Project() { Id= 1, Code= "PR001", Name= "First Project", StartDate = new DateTime(2016, 6, 28), CompletionDate = new DateTime(2016, 9, 28), Priority = 1, Status = ProjectStatuses.Completed },
+                    new Project() { Id = 2, Code = "PR002", Name = "Second Project", StartDate = new DateTime(2017, 2, 15), CompletionDate = new DateTime(2017, 8, 1), Priority = 3, Status = ProjectStatuses.Active },
+                    new Project() { Id = 3, Code = "PR003", Name = "Third Project", StartDate = new DateTime(2019, 1, 31), CompletionDate = new DateTime(2019, 5, 1), Priority = 2, Status = ProjectStatuses.NotStarted }
                 );
             context.SaveChanges();
 
