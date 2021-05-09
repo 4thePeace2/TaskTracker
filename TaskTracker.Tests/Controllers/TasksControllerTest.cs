@@ -17,10 +17,12 @@ namespace TaskTracker.Tests.Controllers
     public class TasksControllerTest
     {
         static List<Task> tasksList;
+
         [TestMethod]
+        // GetByProjectId action returns Ok and list of Tasks
         public void GetByProjectId() 
         { 
-
+            // Mapping objects to objectsDTO
             Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<Project, ProjectDTO>();
@@ -29,6 +31,7 @@ namespace TaskTracker.Tests.Controllers
                 .ForMember(dest => dest.ProjectId, opt => opt.MapFrom(src => src.Project.Id));
             });
 
+            // Arrange
             tasksList = new List<Task>();
             Project p1 = new Project() { Id = 1, Name = "project1" };
             tasksList.Add(new Task()
@@ -49,24 +52,24 @@ namespace TaskTracker.Tests.Controllers
                 Priority = 2,
                 Project = p1
             });
-
             var mockRepository = new Mock<ITaskRepository>();
             mockRepository.Setup(x => x.GetByProjectId(1)).Returns(tasksList.AsQueryable());
-
             var controller = new TasksController(mockRepository.Object);
 
+            // Act
             IHttpActionResult actionResult = controller.GetByProjectId(1);
             var contentResult = actionResult as OkNegotiatedContentResult<IQueryable<TaskDTO>>;
 
+            // Assert
             Assert.IsNotNull(contentResult);
             Assert.AreEqual(tasksList.Count, contentResult.Content.ToList().Count);
             Assert.AreEqual(tasksList.ElementAt(0).Id, contentResult.Content.ToList().ElementAt(0).Id);
         }
 
         [TestMethod]
+        // GetAll action returns list of Tasks
         public void GetAll()
         {
-
             Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<Project, ProjectDTO>();
@@ -75,6 +78,7 @@ namespace TaskTracker.Tests.Controllers
                 .ForMember(dest => dest.ProjectId, opt => opt.MapFrom(src => src.Project.Id));
             });
 
+            // Arrange
             tasksList = new List<Task>();
             Project p1 = new Project() { Id = 1, Name = "project1" };
             Project p2 = new Project() { Id = 2, Name = "project2" };
@@ -100,11 +104,12 @@ namespace TaskTracker.Tests.Controllers
 
             var mockRepository = new Mock<ITaskRepository>();
             mockRepository.Setup(x => x.GetAll()).Returns(tasksList.AsQueryable());
-
             var controller = new TasksController(mockRepository.Object);
 
+            // Act
             IQueryable<TaskDTO> result = controller.GetAll();
 
+            // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(tasksList.Count, result.ToList().Count);
             Assert.AreEqual(tasksList.ElementAt(0).Id, result.ToList().ElementAt(0).Id);

@@ -29,6 +29,23 @@ namespace TaskTracker.Controllers
         }
 
         [HttpGet]
+        [ResponseType(typeof(TaskDTO))]
+        public IHttpActionResult GetById(int id)
+        {
+            if (id < 0)
+            {
+                return BadRequest();
+            }
+            var task = _repository.GetById(id);
+            if (task == null)
+            {
+                return NotFound();
+            }
+            return Ok(Mapper.Map<TaskDTO>(task));
+        }
+
+        [HttpGet]
+        [Route("api/tasks/project")]
         [ResponseType(typeof(IQueryable<TaskDTO>))]
         public IHttpActionResult GetByProjectId(int id)
         {
