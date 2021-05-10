@@ -1,0 +1,679 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Task Tracker API",
+    "description": "Task Tracker API by Milos Maljenovic",
+    "contact": {
+      "name": "Milos Maljenovic",
+      "email": "milosmaljen@gmail.com"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:55690/"
+    }
+  ],
+  "paths": {
+    "/api/tasks/": {
+      "description": "Task Resource",
+      "get": {
+        "description": "Operation to Fetch Tasks",
+        "responses": {
+          "200": {
+            "description": "Success Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tasksDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Add a new Task",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/task"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Record Successfully added",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/taskDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Task object, from body, doesn't meet the criteria- ModelState invalid."
+          }
+        }
+      }
+    },
+    "/api/tasks/{id}": {
+      "description": "Get/Update/Delete Task based on Path Parameter",
+      "get": {
+        "description": "Gets Task with provided Id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success Response with Path Param",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/taskDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Task with provided Id doesn't exist."
+          },
+          "404": {
+            "description": "Not found. Task with that id doesn't exist."
+          }
+        }
+      },
+      "put": {
+        "description": "Update existing task who has provided Id.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/task"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Ok, object is successfully updated."
+          },
+          "400": {
+            "description": "Bad request. Task with that id doesn't exist or id from uri is not same with one from object in body."
+          }
+        }
+      },
+      "delete": {
+        "description": "Deletes Task with provided Id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No content. Task is deleted."
+          },
+          "404": {
+            "description": "Not found. Task with that id doesn't exist."
+          }
+        }
+      }
+    },
+    "/api/tasks/project/{id}": {
+      "get": {
+        "description": "Get all Tasks for specified Project(Id)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success Response with Path Param",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tasksDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Id is smaller than 0"
+          },
+          "404": {
+            "description": "Not found. This project has no tasks attached."
+          }
+        }
+      }
+    },
+    "/api/projects/": {
+      "description": "Project Resource",
+      "get": {
+        "description": "Operation to Fetch Projects",
+        "responses": {
+          "200": {
+            "description": "Success Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/projectsDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Add a new Project",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/project"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Record Successfully added",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/projectDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Project object, from body, doesn't meet the criteria- ModelState invalid."
+          }
+        }
+      }
+    },
+    "/api/projects/{id}": {
+      "description": "Get/Update/Delete Project based on Path Parameter",
+      "get": {
+        "description": "Gets Project with provided Id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok. Returns project with provided Id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/projectDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Project with provided Id doesn't exist."
+          },
+          "404": {
+            "description": "Not found. Project with that id doesn't exist."
+          }
+        }
+      },
+      "put": {
+        "description": "Update existing project who has provided Id.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/project"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Ok, object is successfully updated."
+          },
+          "400": {
+            "description": "Bad request. Project with that id doesn't exist or id from uri is not same with one from object in body."
+          }
+        }
+      },
+      "delete": {
+        "description": "Deletes Project with provided Id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No content. Project is deleted."
+          },
+          "404": {
+            "description": "Not found. Project with that id doesn't exist."
+          }
+        }
+      }
+    },
+    "/api/projects/{start}/{end}": {
+      "get": {
+        "description": "Get Projects who are in provided date range",
+        "parameters": [
+          {
+            "name": "start",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "end",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok. Returns array of projects.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/projectsDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. In case date are not provided or start date is younger than end date."
+          },
+          "404": {
+            "description": "Not found. There is no projects in provided date range."
+          }
+        }
+      }
+    },
+    "/api/projects/with/{priority}": {
+      "get": {
+        "description": "Get Projects who have provided priority",
+        "parameters": [
+          {
+            "name": "priority",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok. Returns array of projects.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/projectsDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. In case priority is smaller than 1 or greater than 3."
+          },
+          "404": {
+            "description": "Not found. There is no projects with provided priority."
+          }
+        }
+      }
+    },
+    "/api/projects/by/{status}": {
+      "get": {
+        "description": "Get Projects who have provided status",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok. Returns array of projects.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/projectsDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. In case status is smaller than 0 or greater than 2."
+          },
+          "404": {
+            "description": "Not found. There is no projects with provided status."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "task": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "integer",
+            "example": 3
+          },
+          "Name": {
+            "type": "string",
+            "example": "Main"
+          },
+          "Status": {
+            "type": "integer",
+            "example": 2
+          },
+          "Description": {
+            "type": "string",
+            "example": "Main description"
+          },
+          "Priority": {
+            "type": "integer",
+            "example": 1
+          },
+          "ProjectId": {
+            "type": "integer",
+            "example": 1
+          }
+        }
+      },
+      "taskDTO": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "integer",
+            "example": 3
+          },
+          "Name": {
+            "type": "string",
+            "example": "Main"
+          },
+          "Status": {
+            "type": "integer",
+            "example": 2
+          },
+          "Description": {
+            "type": "string",
+            "example": "Main description"
+          },
+          "Priority": {
+            "type": "integer",
+            "example": 1
+          },
+          "ProjectId": {
+            "type": "integer",
+            "example": 1
+          },
+          "ProjectName": {
+            "type": "string",
+            "example": "Project 1"
+          }
+        }
+      },
+      "tasksDTO": {
+        "type": "array",
+        "example": [
+          {
+            "Id": 1,
+            "Name": "Main task",
+            "Status": 2,
+            "Description": "Do main task",
+            "Priority": 1,
+            "ProjectId": 2,
+            "ProjectName": "Project 2"
+          },
+          {
+            "Id": 2,
+            "Name": "Side task",
+            "Status": 1,
+            "Description": "Do side task",
+            "Priority": 2,
+            "ProjectId": 2,
+            "ProjectName": "Project 2"
+          }
+        ],
+        "items": {
+          "$ref": "#/components/schemas/tasksDTO_inner"
+        }
+      },
+      "project": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "integer",
+            "example": 1
+          },
+          "Name": {
+            "type": "string",
+            "example": "Project 1"
+          },
+          "StartDate": {
+            "type": "string",
+            "example": "2020-01-01"
+          },
+          "CompletionDate": {
+            "type": "string",
+            "example": "2020-04-01"
+          },
+          "Status": {
+            "type": "integer",
+            "example": 2
+          },
+          "Code": {
+            "type": "string",
+            "example": "Code123"
+          },
+          "Priority": {
+            "type": "integer",
+            "example": 2
+          }
+        }
+      },
+      "projectDTO": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "integer",
+            "example": 1
+          },
+          "Name": {
+            "type": "string",
+            "example": "Project 1"
+          },
+          "StartDate": {
+            "type": "string",
+            "example": "2020-01-01"
+          },
+          "CompletionDate": {
+            "type": "string",
+            "example": "2020-04-01"
+          },
+          "Status": {
+            "type": "integer",
+            "example": 2
+          },
+          "Code": {
+            "type": "string",
+            "example": "Code123"
+          },
+          "Priority": {
+            "type": "integer",
+            "example": 2
+          }
+        }
+      },
+      "projectsDTO": {
+        "type": "array",
+        "example": [
+          {
+            "Id": 1,
+            "Name": "Project 1",
+            "Status": 0,
+            "Code": "Code001",
+            "Priority": 1,
+            "StartDate": "2019-02-22",
+            "CompletionDate": "2019-06-22"
+          },
+          {
+            "Id": 2,
+            "Name": "Project 4",
+            "Status": 1,
+            "Code": "Code002",
+            "Priority": 3,
+            "StartDate": "2019-07-29",
+            "CompletionDate": "2019-09-29"
+          }
+        ],
+        "items": {
+          "$ref": "#/components/schemas/projectsDTO_inner"
+        }
+      },
+      "tasksDTO_inner": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "integer"
+          },
+          "Name": {
+            "type": "string"
+          },
+          "Status": {
+            "type": "integer"
+          },
+          "Description": {
+            "type": "string"
+          },
+          "Priority": {
+            "type": "integer"
+          },
+          "ProjectId": {
+            "type": "integer"
+          },
+          "ProjectName": {
+            "type": "string"
+          }
+        }
+      },
+      "projectsDTO_inner": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "integer"
+          },
+          "Name": {
+            "type": "string"
+          },
+          "Status": {
+            "type": "integer"
+          },
+          "Code": {
+            "type": "string"
+          },
+          "Priority": {
+            "type": "integer"
+          },
+          "StartDate": {
+            "type": "string"
+          },
+          "CompletionDate": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

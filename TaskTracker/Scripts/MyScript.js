@@ -130,17 +130,17 @@ $(document).ready(function () {
         switch (filterValue) {
             case "1":
                 var priorityFilter = $("#prioritySelect").val();
-                filterUrl = projectsUrl + "/with?priority=" + priorityFilter;
+                filterUrl = projectsUrl + "/with/" + priorityFilter;
                 break;
             case "2":
                 var statusFilter = $("#statusSelect").val();
-                filterUrl = projectsUrl + "/by?status=" + statusFilter;
+                filterUrl = projectsUrl + "/by/" + statusFilter;
                 break;
             default:
                 var startDate = $("#filterStartDate").val();
                 var endDate = $("#filterEndDate").val();
 
-                filterUrl = projectsUrl + "?start=" + startDate + "&end=" + endDate;
+                filterUrl = projectsUrl + "/" + startDate + "/" + endDate;
                 break;
         }
 
@@ -529,7 +529,7 @@ $(document).ready(function () {
     //>>>>>>>>>>>>>>>> Get all tasks for specific project <<<<<<<<<<<<<<<<
     function getTasks() {
         tableFlag = 1;
-        var getTaskByIdUrl = tasksUrl + "/project?id=" + this.name;
+        var getTaskByIdUrl = tasksUrl + "/project/" + this.name;
 
         $.getJSON(getTaskByIdUrl, loadMainEntity);
         $.getJSON(projectsUrl, getProjects);
@@ -639,9 +639,6 @@ function validationProject() {
     //>>>>>>>>>>>>>> Start date validation <<<<<<<<<<<<<<<<<<<<<<<<
     if (!startDate) {
         pStartDate.text("Start date is required and has to be older then completion date!");
-        isValid = false;
-    } else if(dates.compare(startDate, endDate) === -1) {
-        pStartDate.text("test");
         isValid = false;
     }
 

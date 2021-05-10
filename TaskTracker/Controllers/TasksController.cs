@@ -50,7 +50,7 @@ namespace TaskTracker.Controllers
         //GetByProjectId action(with custom route)- returns Ok with array of objects from table Tasks in DB who have certain Project id
         //or returns BadRequest if Project id is lower than 0 or returns NotFound if no object meets criteria
         [HttpGet]
-        [Route("api/tasks/project")]
+        [Route("api/tasks/project/{id}")]
         [ResponseType(typeof(IQueryable<TaskDTO>))]
         public IHttpActionResult GetByProjectId(int id)
         {

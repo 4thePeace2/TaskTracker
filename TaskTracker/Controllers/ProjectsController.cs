@@ -110,6 +110,7 @@ namespace TaskTracker.Controllers
         //GetByDateRange action- returns Ok with array of objects from table Projects in DB who are between range of start and end date
         //or returns BadRequest if start date is younger then end date or returns NotFound if no object meets criteria
         [HttpGet]
+        [Route("api/projects/{start}/{end}")]
         [ResponseType(typeof(IQueryable<ProjectDTO>))]
         public IHttpActionResult GetByDateRange(DateTime start, DateTime end)
         {
@@ -137,7 +138,7 @@ namespace TaskTracker.Controllers
         //GetByPriority action- returns Ok with array of objects from table Projects in DB who have certain priority
         //or returns BadRequest if priority is higher than 3/lower than 1 or returns NotFound if no object meets criteria
         [HttpGet]
-        [Route("api/projects/with")]
+        [Route("api/projects/with/{priority}")]
         [ResponseType(typeof(IQueryable<ProjectDTO>))]
         public IHttpActionResult GetByPriority(int priority)
         {
@@ -157,7 +158,7 @@ namespace TaskTracker.Controllers
         //GetByStatus action- returns Ok with array of objects from table Projects in DB who have certain status
         //or returns BadRequest if status is higher than 2/lower than 0 or returns NotFound if no object meets criteria
         [HttpGet]
-        [Route("api/projects/by")]
+        [Route("api/projects/by/{status}")]
         [ResponseType(typeof(IQueryable<ProjectDTO>))]
         public IHttpActionResult GetByStatus(int status)
         {

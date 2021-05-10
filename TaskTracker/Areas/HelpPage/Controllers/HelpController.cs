@@ -29,7 +29,7 @@ namespace TaskTracker.Areas.HelpPage.Controllers
         {
             //ViewBag.DocumentationProvider = Configuration.Services.GetDocumentationProvider();
             //return View(Configuration.Services.GetApiExplorer().ApiDescriptions);
-            return Redirect("https://app.swaggerhub.com/apis/4thePeace2/TaskTracker/1.0.0");
+            return Redirect("https://app.swaggerhub.com/apis/4thePeace2/task-tracker_api/1.0.0");
         }
 
         public ActionResult Api(string apiId)
