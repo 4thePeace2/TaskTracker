@@ -1,33 +1,106 @@
 ﻿$(document).ready(function () {
 
-    //>>>>>>>>>>>>>>>>> Global variable initialization on start <<<<<<<<<<<<<<<<<<<<<<<<<
+    //>>>>>>>>>>>>>>>> Global variable initialization start <<<<<<<<<<<<<<<<
+
+    //>>>>>>>>>>>>>>>> Default host <<<<<<<<<<<<<<<<
     var host = window.location.host;
+
+    //>>>>>>>>>>>>>>>> Default end points <<<<<<<<<<<<<<<<
     var tasksEndpoint = "/api/tasks";
     var projectsEndpoint = "/api/projects";
+
+    //>>>>>>>>>>>>>>>> Default table flag used to fill table with entries and for some other cases <<<<<<<<<<<<<<<<
     var tableFlag = 1;
 
+    //>>>>>>>>>>>>>>>> Default sort direction <<<<<<<<<<<<<<<<
+    var sortDirection = 1;
+
+    //>>>>>>>>>>>>>>>> Id collector for view/edit/delete buttons in table <<<<<<<<<<<<<<<<
     var editingId;
+
+    //>>>>>>>>>>>>>>>> Default http method <<<<<<<<<<<<<<<<
     var httpAction = "POST";
+
+    //>>>>>>>>>>>>>>>> Default filter option <<<<<<<<<<<<<<<<
     var filterValue = "0";
 
+    //>>>>>>>>>>>>>>>> Default urls <<<<<<<<<<<<<<<<
     var tasksUrl = "http://" + host + tasksEndpoint;
-    console.log(tasksUrl);
     var projectsUrl = "http://" + host + projectsEndpoint;
 
     
-
+    //>>>>>>>>>>>>>>>> Clicks and other events <<<<<<<<<<<<<<<<
     $("body").on("click", "#btnDelete", deleteTask); 
     $("body").on("click", "#btnEdit", editTask); 
     $("body").on("click", "#btnView", getTasks);
+    $("body").on("click", "#goProjects", showProjects);
+    $("body").on("click", "#goTasks", showTasks);
     $("body").on("click", "#btnTasks", showTasks); 
     $("body").on("click", "#btnProjects", showProjects);
-    $("body").on("click", "#giveUpBtn", cleanForm); 
+    $("body").on("click", "#giveUpBtn", cleanForm);
+    $("body").on("click", "#giveUpBtn2", cleanForm);
     $("body").on("click", "#filterBtn", filterTable);
+    $("body").on("click", "#sortId", sortById);
+    $("body").on("click", "#sortName", sortByName);
+    $("body").on("click", "#sortDesc", sortByDescription);
     $("#filterBy").on("change", loadFilter);
+
+    
+    //>>>>>>>>>>>>>>>> Global variable initialization end  <<<<<<<<<<<<<<<<
+
+
+    //>>>>>>>>>>>>>>>> Sort by Name- direction <<<<<<<<<<<<<<<<
+    function sortByName() {
+        sortDirection === 1 ? sortDirection = 2 : sortDirection = 1;
+        sortTable();
+    }
+    //>>>>>>>>>>>>>>>> Sort by Description- direction <<<<<<<<<<<<<<<<
+    function sortByDescription() {
+        sortDirection === 3 ? sortDirection = 4 : sortDirection = 3;
+        sortTable();
+    }
+
+    //>>>>>>>>>>>>>>>> Sort by Id- direction <<<<<<<<<<<<<<<<
+    function sortById() {
+        sortDirection === 5 ? sortDirection = 6 : sortDirection = 5;
+        sortTable();
+    }
+
+    //>>>>>>>>>>>>>>>> Sort table <<<<<<<<<<<<<<<<
+    function sortTable() {
+        var rows = $('#mainTable tbody  tr').get();
+
+        rows.sort(function (a, b) {
+
+            var i = 1;
+            if (sortDirection === 3 || sortDirection === 4) {
+                i = 2;
+            } else {
+                i = 0;
+            }
+
+            var A = $(a).children('td').eq(i).text().toUpperCase();
+            var B = $(b).children('td').eq(i).text().toUpperCase();
+
+            if (sortDirection === 1 || sortDirection === 3 || sortDirection === 5) {
+                return -1;
+            }
+
+            if (sortDirection === 2 || sortDirection === 4 || sortDirection === 6) {
+                return 1;
+            }
+
+            return 0;
+
+        });
+
+        $.each(rows, function (index, row) {
+            $('#mainTable').children('tbody').append(row);
+        });
+    }
 
     //>>>>>>>>>>>>>>>> Filtering option <<<<<<<<<<<<<<<<
     function loadFilter(e) {
-        console.log(e.target.value);
         switch (e.target.value) {
             case "1":
                 $("#filterDate").addClass("hidden");
@@ -97,9 +170,15 @@
     function showTasks() {
         $.getJSON(tasksUrl, loadMainEntity);
         $.getJSON(projectsUrl, getProjects);
-        $("#topDiv").addClass("hidden");
-        $("#divTasks").removeClass("hidden"); 
+        $("#topDiv").addClass("hidden"); 
+        $("#goTasks").addClass("hidden");
+        $("#goProjects").removeClass("hidden");
+        $("#divMain").removeClass("hidden"); 
         $("#formTasks").removeClass("hidden");
+        $("#filterDiv").addClass("hidden");
+        $("#formProjects").addClass("hidden"); 
+
+
         tableFlag = 1;
 
     }
@@ -109,14 +188,18 @@
     function showProjects() {
         $.getJSON(projectsUrl, loadMainEntity);
         $("#topDiv").addClass("hidden");
-        $("#divTasks").removeClass("hidden");
+        $("#formTasks").addClass("hidden");
+        $("#goProjects").addClass("hidden");
+        $("#goTasks").removeClass("hidden");
+        $("#divMain").removeClass("hidden");
         $("#formProjects").removeClass("hidden"); 
         $("#filterDiv").removeClass("hidden");
+
         tableFlag = 2;
 
     }
 
-    //>>>>>>>>>>>>>>>> Clean creation form <<<<<<<<<<<<<<
+    //>>>>>>>>>>>>>>>> Clean creation form <<<<<<<<<<<<<<<<
 
     function cleanForm() {
         $("#createInput1").val('');
@@ -133,7 +216,7 @@
 
     }
 
-    //>>>>>>>>>>>>>>>>>>>>>>>>> Edit entity fill form <<<<<<<<<<<<<<<<<<<<<<
+    //>>>>>>>>>>>>>>>> Edit entity fill form <<<<<<<<<<<<<<<<
     function editTask() {
         var editId = this.name;
         if (tableFlag === 1) {
@@ -142,12 +225,14 @@
             var editingUrl = projectsUrl + "/" + editId.toString();
         }
         
-        console.log(editingUrl);
-        //$("#validationMsgInput1").empty();
-        //$("#validationMsgInput2").empty();
-        //$("#validationMsgInput3").empty();
-        //$("#validationMsgInput5").empty();
-        //$("#validationMsgInput6").empty();
+        $("#validationMsgInput1").empty();
+        $("#validationMsgInput2").empty();
+        $("#validationMsgInput5").empty();
+        $("#validationMsgInput6").empty();
+        $("#validationMsgInput7").empty();
+        $("#validationMsgInput8").empty();
+        $("#validationMsgInput11").empty();
+
 
         $.ajax({
             "url": editingUrl,
@@ -155,7 +240,6 @@
         })
             .done(function (data, status) {
                 editingId = data.Id;
-                console.log(data);
                 if (tableFlag === 1) {
                     $("#createInput1").val(data.Name);
                     $("#createInput2").val(data.Description);
@@ -171,9 +255,6 @@
                     $("#createInput10").val(data.Code);
                     $("#createInput11").val(data.Priority);
                 }
-                //$("#addEdit").empty().text("Izmeni");
-
-                //$("#editForm").removeClass("hidden");
                 httpAction = "PUT";
             })
             .fail(function (data, status) {
@@ -187,21 +268,34 @@
 
 
 
-    //>>>>>>>>>>>>>> Submit form for Tasks <<<<<<<<<<<<<<<<<<
+    //>>>>>>>>>>>>>>>> Submit form for Tasks <<<<<<<<<<<<<<<<
     $("#formTasks").submit(function (e) {
 
         e.preventDefault();
-        submitingForm();
+        $("#validationMsgInput1").empty();
+        $("#validationMsgInput2").empty();
+        $("#validationMsgInput5").empty();
+        if (validation()) {
+            submitingForm();
+        }
+        
     });
 
-    //>>>>>>>>>>>>>> Submit form for Projects <<<<<<<<<<<<<<<<<<
+    //>>>>>>>>>>>>>>>> Submit form for Projects <<<<<<<<<<<<<<<<
     $("#formProjects").submit(function (e) {
 
         e.preventDefault();
-        submitingForm();
+        $("#validationMsgInput6").empty();
+        $("#validationMsgInput7").empty();
+        $("#validationMsgInput8").empty();
+        $("#validationMsgInput11").empty();
+
+        if (validationProject()) {
+            submitingForm();
+        }
     });
 
-    //>>>>>>>>>>>>>> Submiting function <<<<<<<<<<<<<<<<<<
+    //>>>>>>>>>>>>>>>> Submiting function <<<<<<<<<<<<<<<<
     function submitingForm() {
         if (tableFlag === 1) {
             var submitUrl = tasksUrl;
@@ -277,10 +371,6 @@
             
         }
 
-        console.log(dataCreate);
-        console.log(submitUrl);
-        console.log(httpAction);
-
         
         $.ajax({
             "url": submitUrl,
@@ -314,14 +404,16 @@
 
             })
             .fail(function (data, status) {
-                //validation();
+                
                 alert("Error while adding object!");
             })
 
     }
 
 
-    //>>>>>>>>>>>>>> Load entity into dropdown menu in task form <<<<<<<<<<<<<<<<<<
+
+
+    //>>>>>>>>>>>>>>>> Load entity into dropdown menu in task form <<<<<<<<<<<<<<<<
     function getProjects(data, status) {
         var project = $("#createInput4select");
         project.empty();
@@ -344,10 +436,11 @@
 
     }
 
-    //>>>>>>>>>>>>>> Load table with task/project entity <<<<<<<<<<<<<<<<<<
+    //>>>>>>>>>>>>>>>> Load table with task/project entity <<<<<<<<<<<<<<<<
     function loadMainEntity(data, status) {
-        console.log("Status: " + status);
         $("#tableTasks").empty();
+
+        
 
 
 
@@ -355,9 +448,6 @@
         container.empty();
 
         if (status == "success") {
-            console.log(data);
-
-            // ispis naslova
             var div = $("<div></div>");
             
             
@@ -386,8 +476,8 @@
 
             div.append(h3);
 
-            var table = $("<table style=\"width: auto; margin:auto\" border='1'  class=\"table table-hover text-center\" ></table>");
-            var header = $("<tr style=\"background-color : lightgreen; height:20px\"><th class=\"text-center\" style=\"width:100px\">" + id + "</th><th class=\"text-center\" style=\"width:250px\">" + name + "</th><th class=\"text-center\" style=\"width:200px\">" + description + "</th><th colspan=" + colSpanVal +" class=\"text-center\" style=\"width:200px\">" + action + "</th></tr>");
+            var table = $("<table id=\"mainTable\" style=\"width: auto; margin:auto\" border='1'  class=\"table table-hover text-center\" ></table>");
+            var header = $("<tr style=\"background-color : lightgreen; height:20px\"><th class=\"text-center\" style=\"width:100px\"><a style=\"color: black\" id=\"sortId\">" + id + "</a></th><th class=\"text-center\" style=\"width:250px\"><a style=\"color: black\" id=\"sortName\">" + name + "</a></th><th class=\"text-center\" style=\"width:200px\"><a style=\"color: black\" id=\"sortDesc\">" + description + "</a></th><th colspan=" + colSpanVal +" class=\"text-center\" style=\"width:200px\">" + action + "</th></tr>");
             head.append(header);
             table.append(head);
             table.append(body);
@@ -399,7 +489,6 @@
 
                 var stringId = data[i].Id.toString();
 
-                console.log(stringId);
                 var displayDelete = "<td><a href=\"#\" id=btnDelete name=" + stringId + ">[" + deleteAction + "]</a></td>";
                 var displayEdit = "<td><a href=\"#\" id=btnEdit  name=" + stringId + ">[" + editAction + "]</a></td>";
 
@@ -423,7 +512,7 @@
 
             div.append(table);
 
-            // ispis novog sadrzaja
+            // adding div with a generated table
             container.append(div);
         }
         else {
@@ -435,24 +524,23 @@
            
     }
 
-    //>>>>>>>>>>>>> Get all tasks for specific project <<<<<<<<<<<<<<<
+    //>>>>>>>>>>>>>>>> Get all tasks for specific project <<<<<<<<<<<<<<<<
     function getTasks() {
         tableFlag = 1;
         var getTaskByIdUrl = tasksUrl + "/project?id=" + this.name;
-        console.log(getTaskByIdUrl);
-        console.log(tableFlag);
 
         $.getJSON(getTaskByIdUrl, loadMainEntity);
         $.getJSON(projectsUrl, getProjects);
         $("#formProjects").addClass("hidden");
+        $("#goTasks").addClass("hidden");
+        $("#goProjects").removeClass("hidden");
         $("#filterDiv").addClass("hidden");
         $("#formTasks").removeClass("hidden");
     }
 
-    //>>>>>>>>>>>>>> Removing entry from table <<<<<<<<<<<<<<<<<<
+    //>>>>>>>>>>>>>>>> Removing entry from table <<<<<<<<<<<<<<<<
     function deleteTask() {
         var deleteId = this.name;
-        console.log(this.name);
         httpAction = "DELETE";
         if (tableFlag === 1) {
             var deleteUrl = tasksUrl;
@@ -483,88 +571,89 @@
     };
 
 
-
-    //>>>>>>>>>>>>>>>>>>>>>> Search form <<<<<<<<<<<<<<<<<<<<<<<<<
-    //function pretrazi() {
-    //    var start = $("#findInput1").val();
-    //    var kraj = $("#findInput2").val();
-    //    httpAction = "POST";
-
-    //    if (token) {
-    //        headers.Authorization = "Bearer " + token;
-    //    }
-
-    //    var searchUrl = pretragaUrl + "?min=" + start + "&max=" + kraj;
-    //    $.ajax({
-    //        "url": searchUrl,
-    //        "type": httpAction,
-    //        "headers": headers
-    //    })
-    //        .done(loadMainEntity)
-    //        .fail(function (data, status) {
-    //            alert("Greska prilikom pretrage!");
-    //        });
-
-    //};
-
-
 });
 
 
 
-//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Data validation before creating an object and submiting it to controller <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-//function validation() {
-//    var name = $("#createInput1").val();
-//    var year = $("#createInput3").val();
-//    var author = $("#createInput2").val();
-//    var price = $("#createInput5").val();
+//>>>>>>>>>>>>>>>> Data validation for tasks before submiting it to controller <<<<<<<<<<<<<<<<
+function validation() {
+    var name = $("#createInput1").val();
+    var description = $("#createInput2").val();
+    var priority = $("#createInput5").val();
 
-//    var pName = $("#validationMsgInput1");
-//    var pAuthor = $("#validationMsgInput2");
-//    var pYear = $("#validationMsgInput3");
-//    var pPrice = $("#validationMsgInput5");
+    var pName = $("#validationMsgInput1");
+    var pDescription = $("#validationMsgInput2");
+    var pPriority = $("#validationMsgInput5");
 
 
 
-//    var isValid = true;
+    var isValid = true;
 
-//    //>>>>>>>>>>>>>> Galery name validation <<<<<<<<<<<<<<<<<<<<<<<<
-//    if (!name) {
-//        pName.text("Naziv slike je obavezno polje!");
-//        isValid = false;
-//    }
-//    else if (name.length > 120) {
-//        pName.text("Naziv slike ne moze biti duzi od 120 karaktera!");
-//        isValid = false;
-//    }
+    //>>>>>>>>>>>>>> Task name validation <<<<<<<<<<<<<<<<<<<<<<<<
+    if (!name) {
+        pName.text("Name is required!");
+        isValid = false;
+    }
 
-//    //>>>>>>>>>>>>>> Author name validation <<<<<<<<<<<<<<<<<<<<<<<<
-//    if (!author) {
-//        pAuthor.text("Autor slike je obavezno polje!");
-//        isValid = false;
-//    }
-//    else if (author.length > 70) {
-//        pAuthor.text("Ime autora ne moze biti duze od 70 karaktera!");
-//        isValid = false;
-//    }
+    //>>>>>>>>>>>>>> Description validation <<<<<<<<<<<<<<<<<<<<<<<<
+    if (!description) {
+        pDescription.text("Description is required!");
+        isValid = false;
+    }
 
-//    //>>>>>>>>>>>>>> Year validation <<<<<<<<<<<<<<<<<<<<<<<<
-//    if (!year || year < 1520 || year > 2019) {
-//        pYear.text("Godina mora biti iz intervala od 1520. do 2019.");
-//        isValid = false;
-//    }
+    //>>>>>>>>>>>>>> Priority validation <<<<<<<<<<<<<<<<<<<<<<<<
 
-//    //>>>>>>>>>>>>>> Price validation <<<<<<<<<<<<<<<<<<<<<<<<
+    if (!priority) {
+        pPriority.text("Priority is required and has to be an number 1(high), 2(normal) or 3(low)!");
+        isValid = false;
+    }
+    return isValid;
+}
 
-//    if (!price) {
-//        pPrice.text("Cena je obavezno polje!");
-//        isValid = false;
-//    }
+//>>>>>>>>>>>>>>>> Data validation for projects before submiting it to controller <<<<<<<<<<<<<<<<
+function validationProject() {
+    var projectName = $("#createInput6").val();
+    var startDate = $("#createInput7").val();
+    var endDate = $("#createInput8").val();
+    var projectPriority = $("#createInput11").val();
 
-//    else if (price < 100.00 || price > 49999.99) {
-//        pPrice.text("Cena mora biti iz intervala od 100 do 49999.99!");
-//        isValid = false;
-//    }
 
-//    return isValid;
-//}
+    var pProjectName = $("#validationMsgInput6");
+    var pStartDate = $("#validationMsgInput7");
+    var pEndDate = $("#validationMsgInput8");
+    var pProjectPriority = $("#validationMsgInput11");
+
+
+
+
+    var isValid = true;
+
+    //>>>>>>>>>>>>>> Project name validation <<<<<<<<<<<<<<<<<<<<<<<<
+    if (!projectName) {
+        pProjectName.text("Name is required!");
+        isValid = false;
+    }
+
+    //>>>>>>>>>>>>>> Start date validation <<<<<<<<<<<<<<<<<<<<<<<<
+    if (!startDate) {
+        pStartDate.text("Start date is required and has to be older then completion date!");
+        isValid = false;
+    } else if(dates.compare(startDate, endDate) === -1) {
+        pStartDate.text("test");
+        isValid = false;
+    }
+
+    //>>>>>>>>>>>>>> End date validation <<<<<<<<<<<<<<<<<<<<<<<<
+    if (!endDate) {
+        pEndDate.text("Completion date is required and has to be younger then start date!");
+        isValid = false;
+    }
+
+    //>>>>>>>>>>>>>> Priority validation <<<<<<<<<<<<<<<<<<<<<<<<
+
+    if (!projectPriority) {
+        pProjectPriority.text("Priority is required and has to be an number 1(high), 2(normal) or 3(low)!");
+        isValid = false;
+    }
+    return isValid;
+}
