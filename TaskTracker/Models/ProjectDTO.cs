@@ -5,6 +5,7 @@ using System.Web;
 
 namespace TaskTracker.Models
 {
+    //class ProjectDTO is meant to be transferred over the network instead of original Project object
     public class ProjectDTO
     {
         public int Id { get; set; }

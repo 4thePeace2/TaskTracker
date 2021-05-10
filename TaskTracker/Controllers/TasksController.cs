@@ -21,6 +21,7 @@ namespace TaskTracker.Controllers
             _repository = repository;
         }
 
+        //GetAll action- returns all data from table Projects in DB
         [HttpGet]
         [ResponseType(typeof(IQueryable<TaskDTO>))]
         public IQueryable<TaskDTO> GetAll()
@@ -28,6 +29,8 @@ namespace TaskTracker.Controllers
             return _repository.GetAll().ProjectTo<TaskDTO>();
         }
 
+        //GetById action- returns Tasks with certain id from table Tasks in DB
+        //or returns BadRequest if Task id is lower than 0 or returns NotFound if no object meets criteria
         [HttpGet]
         [ResponseType(typeof(TaskDTO))]
         public IHttpActionResult GetById(int id)
@@ -44,6 +47,8 @@ namespace TaskTracker.Controllers
             return Ok(Mapper.Map<TaskDTO>(task));
         }
 
+        //GetByProjectId action(with custom route)- returns Ok with array of objects from table Tasks in DB who have certain Project id
+        //or returns BadRequest if Project id is lower than 0 or returns NotFound if no object meets criteria
         [HttpGet]
         [Route("api/tasks/project")]
         [ResponseType(typeof(IQueryable<TaskDTO>))]
@@ -61,6 +66,8 @@ namespace TaskTracker.Controllers
             return Ok(tasks);
         }
 
+        //Post action- adds new Task in table Tasks in DB or returns BadRequest
+        //if ModelState is not valid(doesnt have all required fields filled)
         [HttpPost]
         [ResponseType(typeof(TaskDTO))]
         public IHttpActionResult Post(Task Task)
@@ -74,6 +81,8 @@ namespace TaskTracker.Controllers
             return CreatedAtRoute("DefaultApi", new { id = Task.Id }, Mapper.Map<TaskDTO>(Task));
         }
 
+        //Put action- updates Task with certain id in table Tasks in DB or returns BadRequest
+        //if ModelState is not valid(doesnt have all required fields filled) or id from uri is not same as Task.Id from body
         [HttpPut]
         [ResponseType(typeof(TaskDTO))]
         public IHttpActionResult Put(int id, Task Task)
@@ -100,6 +109,7 @@ namespace TaskTracker.Controllers
             return Ok(Mapper.Map<TaskDTO>(Task));
         }
 
+        //Delete action- deletes Task with certain id in table Tasks in DB or returns NotFound if that id/project doesn't exists
         [HttpDelete]
         [ResponseType(typeof(HttpStatusCode))]
         public IHttpActionResult Delete(int id)

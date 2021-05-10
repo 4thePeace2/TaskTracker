@@ -8,6 +8,8 @@ using TaskTracker.Models;
 
 namespace TaskTracker.Repository
 {
+    //Task repository defined to communicate with DB through context object
+    //Implements ITaskRepository interface(who has all methods difined in it) and IDisposable interface for freeing resources
     public class TaskRepository : ITaskRepository, IDisposable
     {
         private TaskTrackerContext db = new TaskTrackerContext();

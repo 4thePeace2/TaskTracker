@@ -1,7 +1,7 @@
 ﻿@section Scripts {
     @Scripts.Render("~/Scripts/MyScript.js")
 }
-
+@*Index page*@
 <div id="topDiv" class="jumbotron text-center">
     <h1>Task Tracker</h1>
     <button id="btnTasks" class="btn btn-success btn-lg">Manage Tasks</button>
@@ -71,7 +71,7 @@
             </div>
         </div>
         <form style="width: 400px; margin:auto" class="hidden" id="formTasks">
-            <h2 class="text-center">Add new task</h2>
+            <h2 class="text-center">Add/edit task</h2>
 
             <div class="form-group">
                 <label class="col-form-label" for="projectId" style="float:left">Project: </label>
@@ -126,7 +126,7 @@
             </div>
         </form>
         <form class="hidden" style="width: 400px; margin:auto" id="formProjects">
-            <h2 class="text-center">Add new project</h2>
+            <h2 class="text-center">Add/edit project</h2>
             <div class="form-group">
                 <label class="col-form-label" for="projectName" style="float:left">Project name: </label>
                 <input class="form-control col-sm-6" type="text" id="createInput6" style="float:right" />
@@ -189,7 +189,7 @@
         </form>
 
 
-        <div id="tableTasks" class="col-md-12">
+        <div id="tableDiv" class="col-md-12">
 
         </div>
 

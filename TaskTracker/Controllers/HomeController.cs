@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace TaskTracker.Controllers
 {
+    //Default controller made by .net used to generate the Index page
     public class HomeController : Controller
     {
         public ActionResult Index()

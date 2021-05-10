@@ -5,6 +5,7 @@ using System.Web;
 
 namespace TaskTracker.Models
 {
+    //class TaskDTO is meant to be transferred over the network instead of original Task object
     public class TaskDTO
     {
         public int Id { get; set; }

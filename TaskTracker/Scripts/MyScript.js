@@ -1,4 +1,6 @@
-﻿$(document).ready(function () {
+﻿//>>>>>>>>>>>>>>>> MyScript.js is used to manipulated the DOM <<<<<<<<<<<<<<<<
+
+$(document).ready(function () {
 
     //>>>>>>>>>>>>>>>> Global variable initialization start <<<<<<<<<<<<<<<<
 
@@ -438,13 +440,13 @@
 
     //>>>>>>>>>>>>>>>> Load table with task/project entity <<<<<<<<<<<<<<<<
     function loadMainEntity(data, status) {
-        $("#tableTasks").empty();
+        $("#tableDiv").empty();
 
         
 
 
 
-        var container = $("#tableTasks");
+        var container = $("#tableDiv");
         container.empty();
 
         if (status == "success") {

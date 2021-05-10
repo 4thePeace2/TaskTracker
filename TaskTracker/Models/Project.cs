@@ -6,12 +6,15 @@ using System.Web;
 
 namespace TaskTracker.Models
 {
+    //custom enum made for class Project's property Status
     public enum ProjectStatuses
     {
         NotStarted,
         Active,
         Completed
     }
+
+    //Project entity class
     public class Project
     {
         public int Id { get; set; }

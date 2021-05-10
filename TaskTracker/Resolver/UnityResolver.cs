@@ -7,6 +7,8 @@ using System.Web.Http.Dependencies;
 
 namespace TaskTracker.Resolver
 {
+
+    //Unity resolver is used to resolve dependecies
     public class UnityResolver : IDependencyResolver
     {
         protected IUnityContainer container;

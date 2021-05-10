@@ -6,6 +6,7 @@ using System.Web;
 
 namespace TaskTracker.Models
 {
+    //Context class inherits DbContext and has needed DbSets defined
     public class TaskTrackerContext : DbContext
     {
         public TaskTrackerContext() : base("name=TaskTrackerDbContext") { }

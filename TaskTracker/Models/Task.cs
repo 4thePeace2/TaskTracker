@@ -6,12 +6,15 @@ using System.Web;
 
 namespace TaskTracker.Models
 {
+    //custom enum made for class Tasks's property Status
     public enum TaskStatuses
     {
         ToDo,
         InProgress,
         Done
     }
+
+    //Task entity class
     public class Task
     {
         public int Id { get; set; }
@@ -24,6 +27,7 @@ namespace TaskTracker.Models
         [Required]
         [Range(1,3)]
         public int Priority { get; set; }
+        //Foreign key
         public virtual int ProjectId { get; set; }
         public virtual Project Project { get; set; }
 
