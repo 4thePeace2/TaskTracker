@@ -13,6 +13,7 @@
 #################### Dependencies ####################
 - .Net Framework 4.6.1
 - EntityFramework 6.2.0
+- Microsoft.AspNet.WebApi.Core 5.2.7
 - Microsoft.AspNet.WebApi.Cors 5.2.7
 - Microsoft.AspNet.WebApi.Tracing 5.2.7
 - AutoMapper -Version 6.2.2
