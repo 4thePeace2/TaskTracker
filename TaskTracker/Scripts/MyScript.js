@@ -42,64 +42,12 @@ $(document).ready(function () {
     $("body").on("click", "#giveUpBtn", cleanForm);
     $("body").on("click", "#giveUpBtn2", cleanForm);
     $("body").on("click", "#filterBtn", filterTable);
-    $("body").on("click", "#sortId", sortById);
-    $("body").on("click", "#sortName", sortByName);
-    $("body").on("click", "#sortDesc", sortByDescription);
     $("#filterBy").on("change", loadFilter);
 
     
     //>>>>>>>>>>>>>>>> Global variable initialization end  <<<<<<<<<<<<<<<<
 
 
-    //>>>>>>>>>>>>>>>> Sort by Name- direction <<<<<<<<<<<<<<<<
-    function sortByName() {
-        sortDirection === 1 ? sortDirection = 2 : sortDirection = 1;
-        sortTable();
-    }
-    //>>>>>>>>>>>>>>>> Sort by Description- direction <<<<<<<<<<<<<<<<
-    function sortByDescription() {
-        sortDirection === 3 ? sortDirection = 4 : sortDirection = 3;
-        sortTable();
-    }
-
-    //>>>>>>>>>>>>>>>> Sort by Id- direction <<<<<<<<<<<<<<<<
-    function sortById() {
-        sortDirection === 5 ? sortDirection = 6 : sortDirection = 5;
-        sortTable();
-    }
-
-    //>>>>>>>>>>>>>>>> Sort table <<<<<<<<<<<<<<<<
-    function sortTable() {
-        var rows = $('#mainTable tbody  tr').get();
-
-        rows.sort(function (a, b) {
-
-            var i = 1;
-            if (sortDirection === 3 || sortDirection === 4) {
-                i = 2;
-            } else {
-                i = 0;
-            }
-
-            var A = $(a).children('td').eq(i).text().toUpperCase();
-            var B = $(b).children('td').eq(i).text().toUpperCase();
-
-            if (sortDirection === 1 || sortDirection === 3 || sortDirection === 5) {
-                return -1;
-            }
-
-            if (sortDirection === 2 || sortDirection === 4 || sortDirection === 6) {
-                return 1;
-            }
-
-            return 0;
-
-        });
-
-        $.each(rows, function (index, row) {
-            $('#mainTable').children('tbody').append(row);
-        });
-    }
 
     //>>>>>>>>>>>>>>>> Filtering option <<<<<<<<<<<<<<<<
     function loadFilter(e) {
@@ -478,8 +426,8 @@ $(document).ready(function () {
 
             div.append(h3);
 
-            var table = $("<table id=\"mainTable\" style=\"width: auto; margin:auto\" border='1'  class=\"table table-hover text-center\" ></table>");
-            var header = $("<tr style=\"background-color : lightgreen; height:20px\"><th class=\"text-center\" style=\"width:100px\"><a style=\"color: black\" id=\"sortId\">" + id + "</a></th><th class=\"text-center\" style=\"width:250px\"><a style=\"color: black\" id=\"sortName\">" + name + "</a></th><th class=\"text-center\" style=\"width:200px\"><a style=\"color: black\" id=\"sortDesc\">" + description + "</a></th><th colspan=" + colSpanVal +" class=\"text-center\" style=\"width:200px\">" + action + "</th></tr>");
+            var table = $("<table id=\"mainTable\" style=\"width: auto; margin:auto\" border='1'  class=\"table table-hover text-center tablesorter\" ></table>");
+            var header = $("<tr style=\"background-color : lightgreen; height:20px\"><th class=\"text-center\" style=\"width:100px\">" + id + "</th><th class=\"text-center\" style=\"width:250px\">" + name + "</th><th class=\"text-center\" style=\"width:200px\">" + description + "</th><th colspan=" + colSpanVal +" class=\"text-center\" style=\"width:200px\">" + action + "</th></tr>");
             head.append(header);
             table.append(head);
             table.append(body);
@@ -516,6 +464,9 @@ $(document).ready(function () {
 
             // adding div with a generated table
             container.append(div);
+
+            //enabling table sorting with tablesorter package installed in this project solution
+            $("#mainTable").tablesorter();
         }
         else {
             var div = $("<div></div>");
