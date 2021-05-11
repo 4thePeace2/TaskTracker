@@ -1,14 +1,14 @@
 #################### TaskTracker ##########################
-.NET(EntityFramework, Web Api) application for task management on various projects. Application is made in VS2019 with MSSQL local DB.
+- .NET(EntityFramework, Web Api) application for task management on various projects. Application is made in VS2019 with MSSQL local DB.
 
 #################### Getting started ##########################
-Once you download project archive, extract it and start TaskTracker.sln.
-Navigate to Tools > Nuget Package Manager > Manage Nuget Packages for Solution...
-Restore packages
-In Package Manager Console run:
-update-database
-try starting application if it doesn't open properly try running and start it after that again:
-Update-Package Microsoft.CodeDom.Providers.DotNetCompilerPlatform -r
+- Once you download project archive, extract it and start TaskTracker.sln.
+- Navigate to Tools > Nuget Package Manager > Manage Nuget Packages for Solution...
+- Restore packages
+- In Package Manager Console run:
+- update-database
+- try starting application if it doesn't open properly try running and start it after that again:
+- Update-Package Microsoft.CodeDom.Providers.DotNetCompilerPlatform -r
 
 #################### Dependencies ####################
 - .Net Framework 4.6.1
