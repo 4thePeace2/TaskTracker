@@ -62,7 +62,7 @@ namespace TaskTracker.Tests.Controllers
 
             // Assert
             Assert.IsNotNull(contentResult);
-            Assert.AreEqual(tasksList.Count, contentResult.Content.ToList().Count);
+            Assert.AreEqual(tasksList.Count, contentResult.Content.ToList().Count + 1);
             Assert.AreEqual(tasksList.ElementAt(0).Id, contentResult.Content.ToList().ElementAt(0).Id);
         }
 
