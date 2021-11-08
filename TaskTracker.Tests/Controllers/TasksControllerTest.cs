@@ -70,13 +70,13 @@ namespace TaskTracker.Tests.Controllers
         // GetAll action returns list of Tasks
         public void GetAll()
         {
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<Project, ProjectDTO>();
-                cfg.CreateMap<Task, TaskDTO>()
-                .ForMember(dest => dest.ProjectName, opt => opt.MapFrom(src => src.Project.Name))
-                .ForMember(dest => dest.ProjectId, opt => opt.MapFrom(src => src.Project.Id));
-            });
+            //Mapper.Initialize(cfg =>
+            //{
+            //    cfg.CreateMap<Project, ProjectDTO>();
+            //    cfg.CreateMap<Task, TaskDTO>()
+            //    .ForMember(dest => dest.ProjectName, opt => opt.MapFrom(src => src.Project.Name))
+            //    .ForMember(dest => dest.ProjectId, opt => opt.MapFrom(src => src.Project.Id));
+            //});
 
             // Arrange
             tasksList = new List<Task>();
